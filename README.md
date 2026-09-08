@@ -5,7 +5,11 @@ Practice Memory is a full-stack communication workflow prototype for small pract
 I built the MVP after discussing the day-to-day workflow with a practice administrator. The goal was to test whether automatic communication logging and clearer follow-up tracking could reduce missed or duplicated callbacks without replacing the practice's existing software.
 
 > **Project status:** portfolio/pilot MVP. The repository is configured for local development with fake data and is not a production system for real patient information.
+## Interface
 
+![Practice Memory patient communication timeline](docs/images/practice-memory-overview.png)
+
+*All names, contact details, and communication records shown are fictional demo data.*
 ## What it does
 
 ### Patient and contact management
