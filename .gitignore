@@ -1,0 +1,20 @@
+.gradle/
+build/
+data/
+.idea/
+*.iml
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# Local secrets / environment
+.env
+.env.*
+!.env.example
+
+# Logs / OS noise
+*.log
+.DS_Store
+Thumbs.db
