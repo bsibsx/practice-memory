@@ -9,7 +9,46 @@ I built the MVP after discussing the day-to-day workflow with a practice adminis
 
 ![Practice Memory patient communication timeline](docs/images/practice-memory-overview.png)
 
-*All names, contact details, and communication records shown are fictional demo data.*
+*Unified patient timeline containing calls, emails and staff notes. All information shown is fictional demo data.*
+
+## How the workflow works
+
+1. Incoming and outgoing call events are received through provider-neutral REST endpoints. For the local prototype, these events are simulated using Postman. Emails can be ingested through REST endpoints or the optional mailbox connection.
+2. The Spring Boot backend validates each event, normalises the phone number or email address and protects against duplicate records. Related call events are correlated using `providerCallId`, while email replies can be linked using message headers.
+3. The system searches the stored patient contact details for a matching phone number or email address.
+4. When a match is found, the communication is automatically added to that patient’s chronological activity timeline.
+5. When no match is found, the communication is preserved in the Unmatched queue for staff to review and assign.
+6. Missed calls, unanswered outgoing calls and unread emails enter the Inbox and remain there until staff resolve or dismiss them.
+
+```mermaid
+flowchart TD
+    A["Call or email event"] --> B["Spring Boot REST API"]
+    B --> C["Validate, normalise and prevent duplicates"]
+    C --> D{"Matching patient contact?"}
+    D -->|Yes| E["Add to patient timeline"]
+    D -->|No| F["Send to Unmatched queue"]
+    E --> G{"Action required?"}
+    G -->|Yes| H["Keep in staff Inbox"]
+    G -->|No| I["Retain in communication history"]
+    F --> H
+```
+
+> The MVP provides the provider-neutral call ingestion API. Connecting it to a particular telephone provider would require a provider-specific adapter.
+
+## Key workflows
+
+### Follow-up work queue
+
+Missed calls, unanswered outgoing calls and emails requiring a response remain visible in the Inbox until a member of staff resolves or dismisses them.
+
+![Practice Memory follow-up Inbox](docs/images/inbox-work-queue.png)
+
+### Unmatched communication assignment
+
+Communications from unknown contact details are preserved instead of being assigned by guesswork. Staff can match an item to the correct patient and optionally save the new contact detail so future communications match automatically.
+
+![Assigning an unmatched communication to a patient](docs/images/unmatched-assignment.png)
+
 ## What it does
 
 ### Patient and contact management
